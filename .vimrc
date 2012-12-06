@@ -4,8 +4,6 @@ set nocompatible
 set clipboard=unnamed
 " Enhance command-line completion
 set wildmenu
-" Allow cursor keys in insert mode
-set esckeys
 " Allow backspace in insert mode
 set backspace=indent,eol,start
 " Optimize for fast terminal connections
@@ -14,8 +12,6 @@ set ttyfast
 set gdefault
 " Use UTF-8 without BOM
 set encoding=utf-8 nobomb
-" Change mapleader
-let mapleader=","
 " Don’t add empty newlines at the end of files
 set binary
 set noeol
@@ -25,7 +21,9 @@ set directory=~/.vim/swaps
 if exists("&undodir")
 	set undodir=~/.vim/undo
 endif
-
+" Allow backgrounding buffers without writing them, and remember marks/undo
+" for backgrounded buffers
+set hidden
 " Respect modeline in files
 set modeline
 set modelines=4
@@ -36,29 +34,36 @@ set secure
 set number
 " Enable syntax highlighting
 syntax on
-" Highlight current line
+
+" Cursor settings
+set esckeys
 set cursorline
-" Make tabs as wide as two spaces
-set tabstop=2
-" Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-set list
-" Highlight searches
+set ruler
+set whichwrap=b,s,h,l,<,>,[,]
+set nostartofline
+
+" Tab settings
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set textwidth=0
+set smarttab
+set expandtab
+
+" Search settings 
 set hlsearch
-" Ignore case of searches
 set ignorecase
-" Highlight dynamically as pattern is typed
+set smartcase
 set incsearch
+
+" UI settings
+colorscheme desert 
 " Always show status line
 set laststatus=2
 " Enable mouse in all modes
 set mouse=a
 " Disable error bells
 set noerrorbells
-" Don’t reset cursor to start of line when moving around.
-set nostartofline
-" Show the cursor position
-set ruler
 " Don’t show the intro message when starting Vim
 set shortmess=atI
 " Show the current mode
@@ -67,30 +72,71 @@ set showmode
 set title
 " Show the (partial) command as it’s being typed
 set showcmd
-" Use relative line numbers
-if exists("&relativenumber")
-	set relativenumber
-	au BufReadPost * set relativenumber
-endif
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
 
-" Strip trailing whitespace (,ss)
-function! StripWhitespace()
-	let save_cursor = getpos(".")
-	let old_query = getreg('/')
-	:%s/\s\+$//e
-	call setpos('.', save_cursor)
-	call setreg('/', old_query)
-endfunction
-noremap <leader>ss :call StripWhitespace()<CR>
-" Save a file as root (,W)
-noremap <leader>W :w !sudo tee % > /dev/null<CR>
+"""""""""""""""""""""
+"  Language-Specifc 
+"""""""""""""""""""""
+filetype plugin indent on
 
-" Automatic commands
-if has("autocmd")
-	" Enable file type detection
-	filetype on
-	" Treat .json files as .js
-	autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-endif
+autocmd FileType c,cpp,java,perl set ts=8 formatoptions=cro cindent smarttab tw=0 nowrap sidescroll=20 listchars=extends:$ expandtab
+autocmd FileType php,perl set ts=8 formatoptions=cro smartindent smarttab tw=0 nowrap sidescroll=20 listchars=extends:$
+autocmd FileType ruby nnor J /\s*def .*<CR>j^:f<CR>
+autocmd FileType ruby nnor K ?\s*def .*<CR>nj^:f<CR>
+autocmd FileType xml,xslt,xsl set shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType javascript set shiftwidth=2 tabstop=2 softtabstop=2
+autocmd BufRead *.spt set filetype=html
+autocmd BufRead *.mako set filetype=html
+autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+
+" do not expand tabs in makefiles
+autocmd FileType make set noexpandtab
+
+" better python highlighting - see syntax/python.vim for more details
+let python_highlight_all = 1
+let python_highlight_indent_errors = 0
+let python_highlight_space_errors = 0
+
+"set autoindent
+set foldmethod=indent
+"disable stuff that doesn't seem to work well w/ python
+"set autoindent
+"set smartindent
+"set cindent
+
+"""""""""""""""""""""
+"   Mappings
+"""""""""""""""""""""
+
+" remap leader
+let mapleader=","
+
+" qq to leave insert mode
+imap qq <Esc>
+
+" Easy move between buffers
+map <S-Left> :bp<CR>
+imap <S-Left> <Esc>:bp<CR>a
+map <S-Right> :bn<CR>
+imap <S-Right> <Esc>:bn<CR>a
+map <C-Tab> :bn<CR>
+imap <C-Tab> <Esc>:bn<CR>a
+map <S-C-Tab> :bp<CR>
+imap <S-C-Tab> <ESC>:bp<CR>a
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+" Substitute word under cursor. VERY useful
+nnoremap <Leader>r :%s/\<<C-r><C-w>\>/
+
+" spellchecker
+nmap <silent> <leader>s :set spell!<CR>
+set spelllang=de_de
+
+" open .vimrc in new tab with: ,v
+nmap <leader>v :tabedit $MYVIMRC<CR>
+
+" clear the search buffer when hitting return
+nnoremap <CR> :nohlsearch<CR>/<BS>
