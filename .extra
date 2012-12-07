@@ -1,0 +1,14 @@
+# Dynamic directory shortcuts --------------------------------------------
+if [ ! -f ~/.sdirs ]; then
+    touch ~/.sdirs
+fi 
+
+alias show="cat ~/.sdirs"
+function save () {
+    command sed "/!$/d" ~/.sdirs > ~/.sdirs1; \mv ~/.sdirs1 ~/.sdirs; echo "$@"=\"`pwd`\" >> ~/.sdirs; source ~/.sdirs ;
+}
+source ~/.sdirs # Initialization for the above 'save' facility: source the .sdirs file
+shopt -s cdable_vars # set the bash option so that no '$' is required when using the above facility
+
+# Completion ------------------------------------------------------------
+source ~/.git-completion
