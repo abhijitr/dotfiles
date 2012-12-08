@@ -78,3 +78,6 @@
 
 [push]
 	default = simple
+[user]
+	name = Abhijit Rao
+	email = abhijit@pickie.com
