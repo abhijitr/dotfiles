@@ -12,3 +12,7 @@ shopt -s cdable_vars # set the bash option so that no '$' is required when using
 
 # Completion ------------------------------------------------------------
 source ~/.git-completion
+
+# VirtualEnv ------------------------------------------------------------
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/share/python/virtualenvwrapper.sh
