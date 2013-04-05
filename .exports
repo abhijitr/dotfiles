@@ -11,3 +11,6 @@ export HISTFILESIZE=$HISTSIZE
 export HISTCONTROL=ignoredups
 # Make some commands not show up in history
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+
+# the following allows us to run giza without doing "python setup.py develop" for some strange reason
+export PYTHONPATH=

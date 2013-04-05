@@ -36,7 +36,7 @@
 
 [core]
 	# Use custom `.gitignore` and `.gitattributes`
-	excludesfile = ~/.gitignore
+	excludesfile = /Users/abhijit/.gitignore
 	attributesfile = ~/.gitattributes
 	# Treat spaces before tabs, lines that are indented with 8 or more spaces, and all kinds of trailing whitespace as an error
 	whitespace = space-before-tab,indent-with-non-tab,trailing-space
@@ -62,6 +62,7 @@
 [merge]
 	# Include summaries of merged commits in newly created merge commit messages
 	log = true
+	tool = Kaleidoscope
 
 # Use `origin` as the default remote on the `master` branch in all cases
 [branch "master"]
@@ -87,3 +88,19 @@
 [user]
 	name = Abhijit Rao
 	email = abhijit@pickie.com
+[difftool "sourcetree"]
+	cmd = /usr/local/bin/ksdiff -w \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[difftool "Kaleidoscope"]
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+[diff]
+	tool = Kaleidoscope
+[difftool]
+	prompt = false
+[mergetool "Kaleidoscope"]
+	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+[mergetool]
+	prompt = false
