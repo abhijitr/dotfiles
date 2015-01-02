@@ -125,6 +125,11 @@ imap <C-Tab> <Esc>:bn<CR>a
 map <S-C-Tab> :bp<CR>
 imap <S-C-Tab> <ESC>:bp<CR>a
 
+" delete into black hole register 
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+vnoremap <leader>p "_dP
+
 " Don't use Ex mode, use Q for formatting
 map Q gq
 

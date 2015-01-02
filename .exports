@@ -14,3 +14,10 @@ export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
 # the following allows us to run giza without doing "python setup.py develop" for some strange reason
 export PYTHONPATH=
+
+# (optional) so scripts can run properly from anywhere
+export PYTHONPATH=~/code/gelato
+
+# watson
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_65.jdk/Contents/Home
+export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"

@@ -144,3 +144,11 @@ function unquarantine() {
 		xattr -r -d "$attribute" "$@"
 	done
 }
+
+function libs() {
+    if [ -z "$VIRTUAL_ENV" ]; then
+        pushd /usr/local/lib/python2.7/site-packages
+    else
+        pushd $VIRTUAL_ENV/lib/python2.7/site-packages
+    fi
+}

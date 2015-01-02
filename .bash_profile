@@ -41,7 +41,9 @@ export LC_ALL="en_US.UTF-8"
 export LANG="en_US"
 
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
-[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
+#[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
+complete -o default -o nospace -W "$(/usr/bin/ruby -ne 'puts $_.split(/[\s,]+/)[1..-1].reject { |h| h.match /\*|\?/ } if $_.match /^\s*Host[s]*\s+/' < ~/.ssh/config)" scp sftp ssh 2>/dev/null
+
 
 # Add tab completion for `defaults read|write NSGlobalDomain`
 # You could just use `-g` instead, but I like being explicit
